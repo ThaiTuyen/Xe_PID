@@ -48,6 +48,7 @@ void setup() {
 }
 
 void detectLine();
+void detectWall(); 
 void checkSRF05();
 void goStraight(int speed);
 void goBack(int speed);
@@ -58,7 +59,8 @@ void runRound(int speedLeft, int speedRight);
 void loop() {
   // put your main code here, to run repeatedly:
 
-  detectLine(); 
+  detectLine();
+  detectWall(); 
 }
 
 // Car follow white line
@@ -72,50 +74,67 @@ void detectLine(){
   int error;
 
   if((sensor[0]>line)&&(sensor[1]>line)&&(sensor[2]>line)&&(sensor[3]>line)&&(sensor[4]<line))        //0 0 0 0 1
-  turnRight(180);// lech trai
+  //turnRight(180);// lech trai
+  turnRight(255,20);
   else if((sensor[0]>line)&&(sensor[1]>line)&&(sensor[2]>line)&&(sensor[3]<line)&&(sensor[4]<line))   //0 0 0 1 1  
-  //turnRight(150);// lech trai
-  runRound(150,70);
+  //turnRight(160);// lech trai
+  //runRound(150,70);
+  turnRight(235,15);
   else if((sensor[0]>line)&&(sensor[1]>line)&&(sensor[2]>line)&&(sensor[3]<line)&&(sensor[4]>line))    //0 0 0 1 0
   // turnRight(100);
-  turnRight(120);// lech trai
+  turnRight(215,10);
+  //turnRight(140);// lech trai
   else if((sensor[0]>line)&&(sensor[1]>line)&&(sensor[2]<line)&&(sensor[3]<line)&&(sensor[4]>line))   //0 0 1 1 0
   // error=1;// lech trai
-  runRound(120, 60);
-  //turnRight(120);
-  else if((sensor[0]>line)&&(sensor[1]>line)&&(sensor[2]<line)&&(sensor[3]>line)&&(sensor[4]>line))   //0 0 1 0 0
-  goStraight(111);// di thang
+  //runRound(120, 60);
+  turnRight(195,5);
+  else if((sensor[0]>line)&&(sensor[1]>line)&&(sensor[2]<line)&&(sensor[3]>line)&&(sensor[4]<line))   //0 0 1 0 1
+  turnRight(175,5);
   else if((sensor[0]>line)&&(sensor[1]<line)&&(sensor[2]<line)&&(sensor[3]>line)&&(sensor[4]>line))   //0 1 1 0 0
+  turnLeft(100,180);
   // error=0;// line chu T
-  runRound(60,120);
-  //turnLeft(120);
+  //runRound(30,69);
+  //turnLeft(255);
   else if((sensor[0]>line)&&(sensor[1]<line)&&(sensor[2]>line)&&(sensor[3]>line)&&(sensor[4]>line))   //0 1 0 0 0
   // turnLeft(80)
-  turnLeft(120);// lech phai
+  //turnLeft(125);// lech phai
+  //runRound(40,60);
+  turnLeft(100,180);
   else if((sensor[0]<line)&&(sensor[1]<line)&&(sensor[2]>line)&&(sensor[3]>line)&&(sensor[4]>line))   //1 1 0 0 0
+  turnLeft(100,180);
   // error=-1.5; // lech phai
-  runRound(70,150);
-  //turnLeft(150);
+  //runRound(35,70);
+  //turnLeft(255);
   else if((sensor[0]<line)&&(sensor[1]>line)&&(sensor[2]>line)&&(sensor[3]>line)&&(sensor[4]>line))   //1 0 0 0 0
-  turnLeft(150);// lech phai
-  // else if((sensor[0]<line)&&(sensor[1]>line)&&(sensor[2]>line)&&(sensor[3]>line)&&(sensor[4]>line))
+  turnLeft(100,180);
+  //turnLeft(125);// lech phai
+  //runRound(40,60);
   // error=-2.5;// lech phai 
+  else if((sensor[0]<line)&&(sensor[1]>line)&&(sensor[2]<line)&&(sensor[3]>line)&&(sensor[4]>line))   //1 0 1 0 0
+  turnRight(5,175);
   else if((sensor[0]<line)&&(sensor[1]<line)&&(sensor[2]<line)&&(sensor[3]>line)&&(sensor[4]>line))   //1 1 1 0 0
   // error=-3;// cua trai 90 do
-  turnLeft(180);
+  turnLeft(100,180);
+  //turnLeft(125);
+  //runRound(30,70);
   else if((sensor[0]>line)&&(sensor[1]>line)&&(sensor[2]<line)&&(sensor[3]<line)&&(sensor[4]<line))   // 0 0 1 1 1
   // error=3;// cua phai 90 do
-  turnRight(180);
+  turnRight(200,5);
+  else if((sensor[0]>line)&&(sensor[1]>line)&&(sensor[2]<line)&&(sensor[3]>line)&&(sensor[4]>line))   //0 0 1 0 0
+  goStraight(255);// di thang
   else if((sensor[0]>line)&&(sensor[1]>line)&&(sensor[2]>line)&&(sensor[3]>line)&&(sensor[4]>line))   //0 0 0 0 0
   {
     // find line code something Bro :))
- //   runRound(150, 100);
+   runRound(150, 100);
  //   stop(); // Just for checking
   }
   
   
  // Serial.println(sensor[0],sensor[1],sensor[2],sensor[3],sensor[4]);
 }
+
+void detectWall(){
+
 void checkSRF05(){
   digitalWrite(trigRight, LOW); // change trig pin
   delayMicroseconds(2);
@@ -152,20 +171,20 @@ void goBack(int speed){
   digitalWrite(motorLeft1, LOW);
   digitalWrite(motorRight1, LOW);
 }
-void turnLeft(int speed){
-  int temp = constrain(speed, 0, 255);
-  analogWrite(motorRight1, temp);
-  analogWrite(motorLeft1, LOW);
-  digitalWrite(motorLeft2, LOW);
-  digitalWrite(motorRight2, LOW);
-}
-void turnRight(int speed){
-  int temp = constrain(speed, 0, 255);
-  analogWrite(motorLeft1, temp);
-  analogWrite(motorRight1, LOW);
-  digitalWrite(motorLeft2, LOW);
-  digitalWrite(motorRight2, LOW);
-}
+//void turnLeft(int speed){
+  //int temp = constrain(speed, 0, 255);
+  //analogWrite(motorRight1, temp);
+  //analogWrite(motorLeft1, LOW);
+  //digitalWrite(motorLeft2, LOW);
+  //digitalWrite(motorRight2, LOW);
+//}
+//void turnRight(int speed){
+  //int temp = constrain(speed, 0, 255);
+  //analogWrite(motorLeft1, temp);
+  //analogWrite(motorRight1, LOW);
+  //digitalWrite(motorLeft2, LOW);
+  //digitalWrite(motorRight2, LOW);
+//}
 void stop(){
   digitalWrite(motorLeft1, LOW);
   digitalWrite(motorRight1, LOW);
@@ -181,4 +200,26 @@ void runRound(int speedLeft, int speedRight){
   digitalWrite(motorLeft2, LOW);
   digitalWrite(motorRight2, LOW);
 }
+void turnLeft(int speedLeft, int speedRight)
+{
+  int temp1 = constrain(speedLeft, 0, 255);
+  int temp2 = constrain(speedRight, 0, 255);  
+  digitalWrite(motorLeft1, LOW);
+  analogWrite(motorRight1, temp2);
+  analogWrite(motorLeft2, temp1);
+  digitalWrite(motorRight2, LOW); 
+  
+  }
+
+  void turnRight(int speedLeft, int speedRight)
+{
+  int temp1 = constrain(speedLeft, 0, 255);
+  int temp2 = constrain(speedRight, 0, 255);  
+  analogWrite(motorLeft1, temp1);
+  digitalWrite(motorRight1, LOW);
+  digitalWrite(motorLeft2, LOW);
+  analogWrite(motorRight2, temp2); 
+  
+}
+
 
